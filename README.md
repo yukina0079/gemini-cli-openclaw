@@ -27,7 +27,28 @@
 
 ## 🚀 快速开始
 
-### 1. 启用 Gemini CLI Auth 插件
+### 方式一：一键安装脚本（推荐）
+
+**macOS/Linux:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/yukina0079/gemini-cli-openclaw/main/install.sh | bash
+```
+
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/yukina0079/gemini-cli-openclaw/main/install.ps1 | iex
+```
+
+脚本会自动完成：
+- ✓ 检查并安装 Gemini CLI
+- ✓ 检查并安装 OpenClaw
+- ✓ 启用 google-gemini-cli-auth 插件
+- ✓ 重启 Gateway
+- ✓ 引导完成 OAuth 登录
+
+### 方式二：手动安装
+
+#### 1. 启用 Gemini CLI Auth 插件
 
 OpenClaw 内置了 `google-gemini-cli-auth` 插件，默认禁用，需要手动启用：
 
@@ -35,13 +56,13 @@ OpenClaw 内置了 `google-gemini-cli-auth` 插件，默认禁用，需要手动
 openclaw plugins enable google-gemini-cli-auth
 ```
 
-### 2. 重启 Gateway
+#### 2. 重启 Gateway
 
 ```bash
 openclaw gateway restart
 ```
 
-### 3. 登录 Gemini CLI
+#### 3. 登录 Gemini CLI
 
 ```bash
 openclaw models auth login --provider google-gemini-cli --set-default
@@ -53,7 +74,7 @@ openclaw models auth login --provider google-gemini-cli --set-default
 - 将凭据保存到 `~/.gemini/oauth_creds.json`
 - 同步到 OpenClaw 的 auth profiles
 
-### 4. 设置默认模型
+#### 4. 设置默认模型
 
 ```bash
 # 查看可用模型
@@ -63,7 +84,7 @@ openclaw models list --all --provider google-gemini-cli --plain
 openclaw models set google-gemini-cli/gemini-3.1-pro-preview
 ```
 
-### 5. 验证
+#### 5. 验证
 
 ```bash
 # 查看当前模型
