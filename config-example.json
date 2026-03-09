@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.3.7",
+    "lastTouchedAt": "2026-03-09T14:01:07.058Z"
+  },
+  "auth": {
+    "profiles": {
+      "google-gemini-cli:your-email@gmail.com": {
+        "provider": "google-gemini-cli",
+        "mode": "oauth",
+        "email": "your-email@gmail.com"
+      }
+    }
+  },
+  "models": {
+    "mode": "merge"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "google-gemini-cli/gemini-3.1-pro-preview",
+        "fallbacks": []
+      },
+      "models": {
+        "google-gemini-cli/gemini-3.1-pro-preview": {}
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "model": "google-gemini-cli/gemini-3.1-pro-preview"
+      }
+    ]
+  },
+  "plugins": {
+    "entries": {
+      "google-gemini-cli-auth": {
+        "enabled": true
+      }
+    }
+  }
+}
