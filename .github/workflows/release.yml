@@ -1,0 +1,70 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install ps2exe
+        shell: powershell
+        run: |
+          Install-Module -Name ps2exe -Scope CurrentUser -Force -AllowClobber
+      
+      - name: Build exe
+        shell: powershell
+        run: |
+          ps2exe -inputFile "install.ps1" `
+                 -outputFile "gemini-openclaw-installer.exe" `
+                 -title "Gemini CLI + OpenClaw Installer" `
+                 -description "One-click installer for Gemini CLI + OpenClaw" `
+                 -company "yukina0079" `
+                 -version "1.0.0.0" `
+                 -noConsole:$false
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-installer
+          path: gemini-openclaw-installer.exe
+  
+  release:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            windows-installer/gemini-openclaw-installer.exe
+            installer.bat
+            install.sh
+            install.ps1
+          body: |
+            ## Gemini CLI + OpenClaw 安装器
+            
+            ### Windows 用户
+            - 下载 `gemini-openclaw-installer.exe` 直接运行
+            - 或下载 `installer.bat` 双击运行
+            
+            ### macOS/Linux 用户
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/yukina0079/gemini-cli-openclaw/main/install.sh | bash
+            ```
+            
+            ### 手动安装
+            参考 [README.md](https://github.com/yukina0079/gemini-cli-openclaw#readme)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
